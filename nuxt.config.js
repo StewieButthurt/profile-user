@@ -22,9 +22,9 @@ module.exports = {
             '~/assets/smart-grid.sass', // путь к вашему файлу
         ],
     },
-    // css: [
-    //     { src: '@/assets/smart-grid.sass' }
-    // ],
+    plugins: [
+        '~plugins/axios.js',
+    ],
     /*
      ** Build configuration
      */
@@ -33,6 +33,7 @@ module.exports = {
     ],
     modules: [
         '@nuxtjs/style-resources',
+        '@nuxtjs/axios'
     ],
     build: {
         /*
