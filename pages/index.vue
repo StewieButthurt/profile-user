@@ -1,21 +1,42 @@
 <template>
-  <div class="profile">
+  <div class="profile" id="profile">
         <v-card class="profile__card-image">
-            <div class="profile-user__img">
-              <v-img class="mt-5 ml-5 mr-5 mb-5" :src="img" />
+          <div class="profile-user__img">
+              <v-img  aspect-ratio="1" alt="avatar.jpg" :src="img" />
             </div>
         </v-card>
-        <v-card class="profile__card-descr">
-          <v-card-text class="text-h5 font-weight-medium text--primary col-10 text-truncate">
-            <div class="text-truncate">Имя Фамилия</div>
-          </v-card-text>
-        </v-card>
-    </div>
+        <div class="profile__descr">
+          <div class="profile__descr-header">
+            <div class="profile__descr-name font-weight-medium">
+              Владимир
+            </div>
+            <div class="profile__descr-button">
+              <v-btn outlined >Редактировать</v-btn>
+            </div>
+          </div>
+          <div class="profile__descr-info">
+            <div class="profile__descr-info-wrapper mt-2">
+              <div class="profile__descr-info-counter font-weight-medium">
+                0
+              </div>
+              <div class="profile__descr-info-text ml-2">
+                публикаций
+              </div>
+            </div>
+            <div class="profile__descr-info-email mt-2 font-weight-light">
+              asdasdasda@yandex.ru
+            </div>
+          </div>
+        </div>
+  </div>
 </template>
 
 <script>
 
 export default {
+  middleware({store, redirect}) {
+    
+  },
   head: {
     title: 'Мой профиль'
   },
@@ -28,7 +49,7 @@ export default {
   },
   computed: {
     img() {
-      return require('~/assets/' + 'face.jpg')
+      return require('~/assets/' + 'avatar.jpg')
     }
   }
 }
@@ -37,20 +58,48 @@ export default {
 <style lang="sass">
   .profile
     display: flex
+    justify-content: center
     +xs-block
       flex-direction: column
-
-  .profile__card-image,
-  .profile__card-descr
-    margin: 0px 15px 15px 15px
-
-  .profile__card-descr
-    flex-grow: 1
-    display: flex
-    
-  .profile-user__img
-    width: 300px
+      align-items: center
+      justify-content: center
+  
+  #profile .profile__card-image
+    border-radius: 100px
+    overflow: hidden
+    width: 150px
+    min-width: 150px
+  
+  .profile__descr
+    margin-left: 50px
     +xs-block
-      width: 100%
+      margin-left: 0px
+  
+  .profile__descr-header
+    display: flex
+    align-items: flex-end
+    +xs-block
+      margin-top: 25px
+
+  #profile .profile__descr-button .v-btn
+    text-transform: inherit
+    border: 1px solid #d6d6d6
+    height: 30px
+    font-size: 13px
+    letter-spacing: inherit
+    margin-left: 15px
+
+  .profile__descr-info
+    display: flex
+    flex-direction: column
+  
+  .profile__descr-info-wrapper
+    display: flex
+    margin-left: 30px
+  
+  .profile__descr-info-wrapper:first-child 
+    margin-left: 0px
+  
+ 
 </style>
 
