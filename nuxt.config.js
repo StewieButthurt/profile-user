@@ -17,11 +17,23 @@ module.exports = {
      ** Customize the progress bar color
      */
     loading: { color: '#3B8070' },
+    styleResources: {
+        sass: [
+            '~/assets/smart-grid.sass', // путь к вашему файлу
+        ],
+    },
+    plugins: [
+        '~plugins/axios.js',
+    ],
     /*
      ** Build configuration
      */
     buildModules: [
         '@nuxtjs/vuetify'
+    ],
+    modules: [
+        '@nuxtjs/style-resources',
+        '@nuxtjs/axios'
     ],
     build: {
         /*

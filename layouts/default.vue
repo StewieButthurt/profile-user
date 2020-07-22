@@ -32,35 +32,24 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>Мой профиль</v-toolbar-title>
       <v-spacer></v-spacer>
-      <!-- <v-btn icon>
-        <v-icon>mdi-login-variant</v-icon>
-      </v-btn> -->
-      <v-tooltip bottom>
+      <v-tooltip left>
         <template v-slot:activator="{ on, attrs }">
           <v-icon
-            color="primary"
+            color="white"
             dark
             v-bind="attrs"
             v-on="on"
-          >mdi-home</v-icon>
+          >mdi-login-variant</v-icon>
         </template>
-        <span>Tooltip</span>
+        <span>Выйти</span>
       </v-tooltip>
     </v-app-bar>
 
     <v-main>
       <v-container
-        class="fill-height"
         fluid
       >
-        <v-row
-          align="center"
-          justify="center"
-        >
-          <div>
-            <nuxt />
-          </div>
-        </v-row>
+        <nuxt />
       </v-container>
     </v-main>
     <v-footer
@@ -75,12 +64,9 @@
 
 <script>
   export default {
-    props: {
-      source: String,
-    },
     data() {
       return {
-        drawer: null,
+        drawer: false,
       }
     }
   }
