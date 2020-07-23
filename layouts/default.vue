@@ -1,53 +1,78 @@
 <template>
-  <div>
-    <nuxt/>
-  </div>
+  <v-app id="inspire">
+    <v-navigation-drawer
+      v-model="drawer"
+      app
+    >
+      <v-list dense>
+        <v-list-item link to="/">
+          <v-list-item-action>
+            <v-icon>mdi-home</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Главная</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item link>
+          <v-list-item-action>
+            <v-icon>mdi-login-variant</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Выйти</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-app-bar
+      app
+      color="#272727"
+      dark
+    >
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-toolbar-title>Мой профиль</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-tooltip left>
+        <template v-slot:activator="{ on, attrs }">
+          <v-icon
+            color="white"
+            dark
+            v-bind="attrs"
+            v-on="on"
+          >mdi-login-variant</v-icon>
+        </template>
+        <span>Выйти</span>
+      </v-tooltip>
+    </v-app-bar>
+
+    <v-main>
+      <v-container
+        fluid
+      >
+        <nuxt />
+      </v-container>
+    </v-main>
+    <v-footer
+      color="#272727"
+      app
+      dark
+    >
+      <span class="white--text">Developed by nosoff.slawa@yandex.ru</span>
+    </v-footer>
+  </v-app>
 </template>
 
-<style>
-html {
-  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-size: 16px;
-  word-spacing: 1px;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
-}
+<script>
+  export default {
+    data() {
+      return {
+        drawer: false,
+      }
+    }
+  }
+</script>
 
-*, *:before, *:after {
-  box-sizing: border-box;
-  margin: 0;
-}
+<style lang="sass">
 
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
-}
-
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
-}
-
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
-}
 </style>
 

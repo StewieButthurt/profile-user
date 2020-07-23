@@ -1,65 +1,114 @@
 <template>
-  <section class="container">
-    <div>
-      <app-logo/>
-      <h1 class="title">
-        profile-user
-      </h1>
-      <h2 class="subtitle">
-        User profile app
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green">Documentation</a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey">GitHub</a>
-      </div>
-    </div>
-  </section>
+  <div class="profile" id="profile">
+        <v-card class="profile__card-image">
+          <div class="profile-user__img">
+              <v-img  aspect-ratio="1" alt="avatar.jpg" :src="img" />
+            </div>
+        </v-card>
+        <div class="profile__descr">
+          <div class="profile__descr-header">
+            <div class="profile__descr-name font-weight-medium">
+              Владимир
+            </div>
+            <div class="profile__descr-button">
+              <v-btn outlined >Редактировать</v-btn>
+            </div>
+          </div>
+          <div class="profile__descr-info">
+            <div class="profile__descr-info-wrapper mt-2">
+              <div class="profile__descr-info-counter font-weight-medium">
+                0
+              </div>
+              <div class="profile__descr-info-text ml-2">
+                публикаций
+              </div>
+            </div>
+            <div class="profile__descr-info-email mt-2 font-weight-light">
+              asdasdasda@yandex.ru
+            </div>
+          </div>
+        </div>
+  </div>
 </template>
 
 <script>
-import AppLogo from '~/components/AppLogo.vue'
 
 export default {
-  components: {
-    AppLogo
+  async middleware({store, redirect, $axios}) {
+    const token = store.getters['modules/auth/token']
+    try {
+      if(!store.getters['modules/auth/token']) {
+          await store.dispatch('modules/auth/autoLogin')
+      }
+      await $axios.$get('api/auth/token/')
+    } catch(e) {
+
+    }
+    
+  },
+  head: {
+    title: 'Мой профиль'
+  },
+  data() {
+    return {
+      profile: {
+
+      }
+    }
+  },
+  computed: {
+    img() {
+      return require('~/assets/' + 'avatar.jpg')
+    }
   }
 }
 </script>
 
-<style>
-.container {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
+<style lang="sass">
+  .profile
+    display: flex
+    justify-content: center
+    +xs-block
+      flex-direction: column
+      align-items: center
+      justify-content: center
+  
+  #profile .profile__card-image
+    border-radius: 100px
+    overflow: hidden
+    width: 150px
+    min-width: 150px
+  
+  .profile__descr
+    margin-left: 50px
+    +xs-block
+      margin-left: 0px
+  
+  .profile__descr-header
+    display: flex
+    align-items: flex-end
+    +xs-block
+      margin-top: 25px
 
-.title {
-  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* 1 */
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
+  #profile .profile__descr-button .v-btn
+    text-transform: inherit
+    border: 1px solid #d6d6d6
+    height: 30px
+    font-size: 13px
+    letter-spacing: inherit
+    margin-left: 15px
 
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
+  .profile__descr-info
+    display: flex
+    flex-direction: column
+  
+  .profile__descr-info-wrapper
+    display: flex
+    margin-left: 30px
+  
+  .profile__descr-info-wrapper:first-child 
+    margin-left: 0px
+  
+ 
 </style>
 
