@@ -34,7 +34,16 @@
 <script>
 
 export default {
-  middleware({store, redirect}) {
+  async middleware({store, redirect, $axios}) {
+    const token = store.getters['modules/auth/token']
+    try {
+      if(!store.getters['modules/auth/token']) {
+          await store.dispatch('modules/auth/autoLogin')
+      }
+      await $axios.$get('api/auth/token/')
+    } catch(e) {
+
+    }
     
   },
   head: {
