@@ -24,24 +24,6 @@ const mutations = {
 }
 
 const actions = {
-    async login({ commit, dispatch }, formData) {
-        try {
-            const { token } = await this.$axios.$post('/api/auth/admin/login', formData)
-            dispatch('setToken', token)
-        } catch (e) {
-            if (e.response) {
-                if (e.response.status === 429) {
-                    commit('setAuthStatusError', 429)
-                } else {
-                    commit('setError', e, { root: true })
-                    throw e
-                }
-            } else {
-                commit('setError', e, { root: true })
-                throw e
-            }
-        }
-    },
     async checkToken({ $axios, redirect }) {
         try {
             return await $axios.$get('/api/auth/admin/token')

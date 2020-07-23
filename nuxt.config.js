@@ -13,6 +13,7 @@ module.exports = {
             { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
         ]
     },
+    telemetry: false,
     /*
      ** Customize the progress bar color
      */

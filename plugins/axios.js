@@ -10,23 +10,16 @@ export default function({ $axios, redirect, store }) {
         // обработка ошибок от axios
     $axios.onError(error => {
         if (error.response) {
-            if (error.response.status === 402) {
-                store.dispatch('modules/auth/logout')
-                redirect('/login?message=errorAuth')
-            }
 
             if (error.response.status === 401) {
+
                 store.dispatch('modules/auth/logout')
                 redirect('/login?message=login')
-            }
 
-            // if (error.response.status === 429) {
-            //     store.dispatch('modules/auth/logout')
-            //     redirect('/login?message=loginAttempts')
-            // }
+            } else if (error.response.status === 500) {
 
-            if (error.response.status === 500) {
                 console.error('Server 500 error')
+
             }
         }
     })
