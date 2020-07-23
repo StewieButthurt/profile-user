@@ -6,16 +6,25 @@ const rateLimit = require("express-rate-limit")
 
 
 const AuthLimiter = rateLimit({
-    windowMs: 5 * 60 * 1000, // 5 min
+    windowMs: 10 * 60 * 100, // 10 sec
     max: 5, // start blocking after 5 requests
     message: "Too many authorization attempts, try again in an 5 min",
     skipSuccessfulRequests: true
 });
 
+// /api/auth/token
+router.get(
+    '/token',
+    passport.authenticate('jwt', { session: false }),
+    function(req, res) {
+        res.status(200).json({ message: 'Token true' })
+    }
+)
 
-// /api/auth/admin/login
+
+// /api/auth/
 router.post(
-    '/admin/login',
+    '/',
     AuthLimiter,
     login
 )
