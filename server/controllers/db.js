@@ -1,17 +1,14 @@
 const fs = require('fs')
 
-module.exports.get = async(req, res) => {
+module.exports.get = (callback) => {
 
-    var obj;
-
-    fs.readFile('../db.json', 'utf8', function(err, data) {
+    return fs.readFile('server/db.json', 'utf8', (err, data) => {
         if (err) {
             throw err
         }
 
-        obj = JSON.parse(data)
+        callback(JSON.parse(data))
     })
 
-    return obj
 
 }
