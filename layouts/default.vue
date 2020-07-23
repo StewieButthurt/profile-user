@@ -39,6 +39,7 @@
             dark
             v-bind="attrs"
             v-on="on"
+            @click="clickLogout()"
           >mdi-login-variant</v-icon>
         </template>
         <span>Выйти</span>
@@ -67,6 +68,12 @@
     data() {
       return {
         drawer: false,
+      }
+    },
+    methods: {
+      async clickLogout() {
+        await this.$store.dispatch('modules/auth/logout')
+        this.$router.push('/login')
       }
     }
   }
