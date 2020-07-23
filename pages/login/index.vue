@@ -9,60 +9,71 @@
                     align="center"
                     justify="center"
                 >
-                    <v-card class="authorization__card">
-                        <v-toolbar
-                        color="#272727"
-                        dark
-                        flat
-                        >
-                            <v-toolbar-title>Login form</v-toolbar-title>
-                            <v-spacer></v-spacer>
-                        </v-toolbar>
-                        <v-card-text>
-                            <v-form>
-                                
-                                <v-text-field
-                                    label="Login"
-                                    name="login"
-                                    prepend-icon="mdi-account"
-                                    type="text"
-                                    autocomplete="new-password"
-                                    v-model="login.value"
-                                    :error-messages="login.message"
-                                    :error="login.error"
-                                    @input="inputLogin()"
-                                    @keyup.enter="loginAuth"
-                                />
+                    <v-col>
+                        <v-fade-transition>
+                            <app-alert 
+                                v-if="alert.status"
+                                :text="alert.text"
+                                :dense="alert.dense"
+                                :type="alert.type"
+                                :transition="alert.transition"
+                            />
+                        </v-fade-transition>
+                        <v-card class="authorization__card mt-2">
+                            <v-toolbar
+                            color="#272727"
+                            dark
+                            flat
+                            >
+                                <v-toolbar-title>Login form</v-toolbar-title>
+                                <v-spacer></v-spacer>
+                            </v-toolbar>
+                            <v-card-text>
+                                <v-form>
+                                    
+                                    <v-text-field
+                                        label="Login"
+                                        name="login"
+                                        prepend-icon="mdi-account"
+                                        type="text"
+                                        autocomplete="new-password"
+                                        v-model="login.value"
+                                        :error-messages="login.message"
+                                        :error="login.error"
+                                        @input="inputLogin()"
+                                        @keyup.enter="loginAuth"
+                                    />
 
-                                <v-text-field
-                                    id="password"
-                                    label="Password"
-                                    autocomplete="new-password"
-                                    name="password"
-                                    prepend-icon="mdi-lock"
-                                    type="password"
-                                    v-model="password.value"
-                                    :error-messages="password.message"
-                                    :error="password.error"
-                                    @input="inputPassword()"
-                                    @keyup.enter="loginAuth"
-                                />
-                            </v-form>
-                        </v-card-text>
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn 
-                                color="#272727" 
-                                dark
-                                :loading="loading"
-                                :disabled="!(disabledButtonLogin === true && 
-                                    disabledButtonPassword === true)"
-                                @click="loginAuth()"
-                                >
-                                Login
-                            </v-btn>
-                        </v-card-actions>
-                    </v-card>
+                                    <v-text-field
+                                        id="password"
+                                        label="Password"
+                                        autocomplete="new-password"
+                                        name="password"
+                                        prepend-icon="mdi-lock"
+                                        type="password"
+                                        v-model="password.value"
+                                        :error-messages="password.message"
+                                        :error="password.error"
+                                        @input="inputPassword()"
+                                        @keyup.enter="loginAuth"
+                                    />
+                                </v-form>
+                            </v-card-text>
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn 
+                                    color="#272727" 
+                                    dark
+                                    :loading="loading"
+                                    :disabled="!(disabledButtonLogin === true && 
+                                        disabledButtonPassword === true)"
+                                    @click="loginAuth()"
+                                    >
+                                    Login
+                                </v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-col>
                 </v-row>
             </v-container>
         </v-main>
@@ -74,11 +85,15 @@
     import isEmpty from 'validator/lib/isEmpty'
 	import isAlphanumeric from 'validator/lib/isAlphanumeric'
     import isByteLength from 'validator/lib/isByteLength'
+    const AppAlert = () => import('~/components/login-alert.vue')
 
     export default {
         layout: 'login',
         head: {
             title: 'Авторизация'
+        },
+        components: {
+            AppAlert
         },
         data() {
             return {
@@ -96,7 +111,14 @@
                     size: { min: 3, max: 24 },
                     validate: false
                 },
-                loading: false
+                loading: false,
+                alert: {
+                    status: false,
+                    text: null,
+                    dense: true,
+                    type: null,
+                    transition: null
+                }
             }
         },
         computed: {
@@ -112,6 +134,22 @@
                     return true
                 } else {
                     return false
+                }
+            },
+            message() {
+              return this.$route.query
+            }
+        },
+        watch: {
+            message(val) {
+                if(val.message === 'login') {
+
+                    this.$store.dispatch('modules/auth/logout')
+                    this.alert.text = 'Авторизуйтесь чтобы начать'
+                    this.alert.type = 'info'
+                    this.alert.transition = 'scale-transition'
+                    this.alert.status = true
+
                 }
             }
         },
@@ -195,14 +233,35 @@
                 this.loading = true
 
                 try {
-                //   this.$router.push('/login')
-                  await this.$store.dispatch('modules/auth/login', {
-                      login: this.login.value,
-                      password: this.password.value
-                  })
-                  this.loading = false
-                  this.$router.push('/admin/home/')
+                    this.alert.status = false
+                    const { token } = await this.$axios.$post('/api/auth/', {
+                        login: this.login.value,
+                        password: this.password.value
+                    })
+                    await this.$store.dispatch('modules/auth/setToken', token)
+                    this.loading = false
+                    this.$router.push('/')
                 } catch (e) {
+                    if(e.response) {
+                        if (e.response.status === 429) {
+
+                            this.$store.dispatch('modules/auth/logout')
+                            this.alert.text = `Слишком много попыток 
+                            авторизации, попробуйте вновь через 10 секунд`
+                            this.alert.type = 'error'
+                            this.alert.transition = 'scale-transition'
+                            this.alert.status = true
+
+                        } else if (e.response.status === 402) {
+                            console.log('error 402')
+                            this.$store.dispatch('modules/auth/logout')
+                            this.alert.text = 'Введеные данные неверные'
+                            this.alert.type = 'error'
+                            this.alert.transition = 'scale-transition'
+                            this.alert.status = true
+
+                        }
+                    }
                     this.loading = false
                   }
               }
