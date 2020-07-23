@@ -13,16 +13,19 @@ const options = {
 
 module.exports = new Strategy(options, async(payload, done) => {
     try {
-        var data = get;
-
-        console.log(data)
-            // data.forEach(element => {
-            //     if (element.username === payload.username) {
-            //         done(null, candidate)
-            //     } else {
-            //         done(null, false)
-            //     }
-            // });
+        get(data => {
+            data.profile.every((element, index) => {
+                if (element.username === payload.login) {
+                    done(null, element)
+                    return false
+                } else {
+                    if (data.profile.length - 1 === index) {
+                        done(null, false)
+                        return false
+                    }
+                }
+            })
+        })
     } catch (e) {
         console.error(e)
     }
