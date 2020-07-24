@@ -8,14 +8,14 @@
         <div class="profile__descr">
           <div class="profile__descr-header">
             <div class="profile__descr-name font-weight-medium">
-              Владимир
+              {{profile.name}}
             </div>
             <div class="profile__descr-button">
               <v-btn outlined >Редактировать</v-btn>
             </div>
           </div>
           <div class="profile__descr-info">
-            <div class="profile__descr-info-wrapper mt-2">
+            <div class="profile__descr-info-wrapper mt-4">
               <div class="profile__descr-info-counter font-weight-medium">
                 0
               </div>
@@ -23,8 +23,8 @@
                 публикаций
               </div>
             </div>
-            <div class="profile__descr-info-email mt-2 font-weight-light">
-              asdasdasda@yandex.ru
+            <div class="profile__descr-info-email mt-4 font-weight-light">
+              {{profile.email}}
             </div>
           </div>
         </div>
@@ -35,30 +35,27 @@
 
 export default {
   async middleware({store, redirect, $axios}) {
-    const token = store.getters['modules/auth/token']
     try {
+
       if(!store.getters['modules/auth/token']) {
           await store.dispatch('modules/auth/autoLogin')
       }
-      await $axios.$get('api/auth/token/')
+      const token = await $axios.$get('api/auth/token/')
+      await store.dispatch('modules/profile/setProfile', token.profile)
     } catch(e) {
-
+      throw e
     }
     
   },
   head: {
     title: 'Мой профиль'
   },
-  data() {
-    return {
-      profile: {
-
-      }
-    }
-  },
   computed: {
     img() {
-      return require('~/assets/' + 'avatar.jpg')
+      return require('~/assets/' + this.profile.photo)
+    },
+    profile() {
+      return this.$store.getters['modules/profile/profile']
     }
   }
 }
@@ -68,6 +65,7 @@ export default {
   .profile
     display: flex
     justify-content: center
+    margin-top: 20px
     +xs-block
       flex-direction: column
       align-items: center
@@ -80,7 +78,7 @@ export default {
     min-width: 150px
   
   .profile__descr
-    margin-left: 50px
+    margin-left: 80px
     +xs-block
       margin-left: 0px
   
@@ -96,7 +94,7 @@ export default {
     height: 30px
     font-size: 13px
     letter-spacing: inherit
-    margin-left: 15px
+    margin-left: 40px
 
   .profile__descr-info
     display: flex
