@@ -21,18 +21,18 @@
                         </v-fade-transition>
                         <v-card class="authorization__card mt-2">
                             <v-toolbar
-                            color="#272727"
+                            color="primary"
                             dark
                             flat
                             >
-                                <v-toolbar-title>Login form</v-toolbar-title>
+                                <v-toolbar-title>Авторизация</v-toolbar-title>
                                 <v-spacer></v-spacer>
                             </v-toolbar>
                             <v-card-text>
                                 <v-form>
                                     
                                     <v-text-field
-                                        label="Login"
+                                        label="Логин"
                                         name="login"
                                         prepend-icon="mdi-account"
                                         type="text"
@@ -46,7 +46,7 @@
 
                                     <v-text-field
                                         id="password"
-                                        label="Password"
+                                        label="Пароль"
                                         autocomplete="new-password"
                                         name="password"
                                         prepend-icon="mdi-lock"
@@ -62,14 +62,13 @@
                             <v-card-actions>
                                 <v-spacer></v-spacer>
                                 <v-btn 
-                                    color="#272727" 
-                                    dark
+                                    color="primary" 
                                     :loading="loading"
                                     :disabled="!(disabledButtonLogin === true && 
                                         disabledButtonPassword === true)"
                                     @click="loginAuth()"
                                     >
-                                    Login
+                                    Войти
                                 </v-btn>
                             </v-card-actions>
                         </v-card>
@@ -94,6 +93,15 @@
         },
         components: {
             AppAlert
+        },
+        async mounted() {
+            if(this.message.message === 'login') {
+                this.$store.dispatch('modules/auth/logout')
+                this.alert.text = 'Авторизуйтесь чтобы начать'
+                this.alert.type = 'info'
+                this.alert.transition = 'scale-transition'
+                this.alert.status = true
+            }
         },
         data() {
             return {
@@ -138,19 +146,6 @@
             },
             message() {
               return this.$route.query
-            }
-        },
-        watch: {
-            message(val) {
-                if(val.message === 'login') {
-
-                    this.$store.dispatch('modules/auth/logout')
-                    this.alert.text = 'Авторизуйтесь чтобы начать'
-                    this.alert.type = 'info'
-                    this.alert.transition = 'scale-transition'
-                    this.alert.status = true
-
-                }
             }
         },
         methods: {
