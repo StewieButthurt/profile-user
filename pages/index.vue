@@ -15,7 +15,7 @@
             </div>
           </div>
           <div class="profile__descr-info">
-            <div class="profile__descr-info-wrapper mt-2">
+            <div class="profile__descr-info-wrapper mt-4">
               <div class="profile__descr-info-counter font-weight-medium">
                 0
               </div>
@@ -23,7 +23,7 @@
                 публикаций
               </div>
             </div>
-            <div class="profile__descr-info-email mt-2 font-weight-light">
+            <div class="profile__descr-info-email mt-4 font-weight-light">
               {{profile.email}}
             </div>
           </div>
@@ -65,6 +65,7 @@ export default {
   .profile
     display: flex
     justify-content: center
+    margin-top: 20px
     +xs-block
       flex-direction: column
       align-items: center
@@ -77,7 +78,7 @@ export default {
     min-width: 150px
   
   .profile__descr
-    margin-left: 50px
+    margin-left: 80px
     +xs-block
       margin-left: 0px
   
@@ -93,7 +94,7 @@ export default {
     height: 30px
     font-size: 13px
     letter-spacing: inherit
-    margin-left: 15px
+    margin-left: 40px
 
   .profile__descr-info
     display: flex
