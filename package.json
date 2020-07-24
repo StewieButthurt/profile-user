@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "User profile app",
     "author": "StewieButthurt <nosoff.slawa@yandex.ru>",
-    "private": true,
+    "private": false,
     "scripts": {
         "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
         "build": "nuxt build",
@@ -15,7 +15,7 @@
         "heroku-postbuild": "npm run build"
     },
     "engines": {
-        "node": "12.x"
+        "node": "11.x"
     },
     "browserslist": [
         " >= 0.3%"
