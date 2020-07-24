@@ -13,7 +13,7 @@
             <v-list-item-title>Главная</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link>
+        <v-list-item link @click.stop="clickLogout()">
           <v-list-item-action>
             <v-icon>mdi-login-variant</v-icon>
           </v-list-item-action>
