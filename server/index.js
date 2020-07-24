@@ -12,6 +12,8 @@ const authRoutes = require('./routes/auth.routes');
 
 const app = express()
 
+// инициализируем middleware
+// для проверки авторизации
 app.use(passport.initialize())
 passport.use(passportStrategy)
 
@@ -26,7 +28,7 @@ app.use(cors());
 // для apiLimiter
 app.enable('trust proxy');
 
-
+// модуль для установки лимита запросов
 const apiLimiter = new RateLimit({
     windowMs: 5 * 60 * 1000, // 5 minutes
     max: 300,

@@ -24,23 +24,19 @@ const mutations = {
 }
 
 const actions = {
-    async checkToken({ $axios, redirect }) {
-        try {
-            return await $axios.$get('/api/auth/admin/token')
-        } catch (e) {
-            redirect('/login?message=login')
-        }
-    },
+    // устанавливаем токен
     async setToken({ commit }, token) {
         this.$axios.setToken(token, 'Bearer')
         commit('setToken', token)
         Cookies.set('jwt-token', token)
     },
+    // выходим из аккаунта
     async logout({ commit }) {
         this.$axios.setToken(false)
         commit('clearToken')
         Cookies.remove('jwt-token')
     },
+    // автологин
     async autoLogin({ dispatch }) {
         const cookieStr = process.browser ?
             document.cookie :
@@ -63,6 +59,7 @@ const getters = {
     authStatusError: state => state.authStatusError
 }
 
+// проверяем цикл жизни токена
 function isJWTValid(token) {
     if (!token) {
         return false
