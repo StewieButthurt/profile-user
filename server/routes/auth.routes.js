@@ -14,6 +14,8 @@ const AuthLimiter = rateLimit({
 });
 
 // /api/auth/token
+// проверяем токен, в случае успешной валидации
+// возвращаем профиль пользователя
 router.get(
     '/token',
     passport.authenticate('jwt', { session: false }),

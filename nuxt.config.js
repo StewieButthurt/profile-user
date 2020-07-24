@@ -34,7 +34,19 @@ module.exports = {
     ],
     modules: [
         '@nuxtjs/style-resources',
-        '@nuxtjs/axios'
+        '@nuxtjs/axios',
+
+        [
+            "nuxt-compress",
+            {
+                gzip: {
+                    cache: true
+                },
+                brotli: {
+                    threshold: 10240
+                }
+            }
+        ]
     ],
     build: {
         /*

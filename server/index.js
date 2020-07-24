@@ -1,17 +1,22 @@
 const express = require('express')
 const consola = require('consola')
 const { Router } = require('express')
+const compression = require('compression')
 const bodyParser = require('body-parser')
 const passport = require('passport');
 const passportStrategy = require('./middleware/passport-strategy');
 const RateLimit = require('express-rate-limit');
 const cors = require('cors');
-const fs = require('fs');
 const { Nuxt, Builder } = require('nuxt')
 const authRoutes = require('./routes/auth.routes');
 
 const app = express()
 
+// настройка gzip
+app.use(compression())
+
+// инициализируем middleware
+// для проверки авторизации
 app.use(passport.initialize())
 passport.use(passportStrategy)
 
@@ -26,7 +31,7 @@ app.use(cors());
 // для apiLimiter
 app.enable('trust proxy');
 
-
+// модуль для установки лимита запросов
 const apiLimiter = new RateLimit({
     windowMs: 5 * 60 * 1000, // 5 minutes
     max: 300,
