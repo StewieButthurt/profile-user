@@ -81,9 +81,11 @@
 
 <script>
 
+    // модули для валидации пользоватеьского ввода
     import isEmpty from 'validator/lib/isEmpty'
 	import isAlphanumeric from 'validator/lib/isAlphanumeric'
     import isByteLength from 'validator/lib/isByteLength'
+    // модуль уведомлений
     const AppAlert = () => import('~/components/login-alert.vue')
 
     export default {
@@ -95,6 +97,7 @@
             AppAlert
         },
         async mounted() {
+            // включаем алерт, если находимся на ?message=login
             if(this.message.message === 'login') {
                 this.$store.dispatch('modules/auth/logout')
                 this.alert.text = 'Авторизуйтесь чтобы начать'
@@ -130,6 +133,7 @@
             }
         },
         computed: {
+            // проверяем условия валидации для логина
             disabledButtonLogin() {
                 if(this.login.value !== '' && this.login.validate === true) {
                     return true
@@ -137,6 +141,7 @@
                     return false
                 }
             },
+            // проверяем условия валидации для пароля
             disabledButtonPassword() {
                 if(this.password.value !== '' && this.password.validate === true) {
                     return true
@@ -144,11 +149,13 @@
                     return false
                 }
             },
+            // получаем параметры из адресной строки
             message() {
               return this.$route.query
             }
         },
         methods: {
+            // валидация поля ввода для логина
             async inputLogin() {
                 
                 if(!isEmpty(this.login.value)) {
@@ -181,6 +188,7 @@
                     this.login.validate = false
                 }
             },
+            // валидация поля ввода для пароля
             async inputPassword() {
 
               if(!isEmpty(this.password.value)) {
@@ -221,22 +229,28 @@
 
               }
             },
+            // при нажати на enter или кнопку "войти"
             async loginAuth() {
-
+                
+                // проверяем условия валидации
               if(this.disabledButtonLogin && this.disabledButtonPassword) {
 
                 this.loading = true
 
                 try {
                     this.alert.status = false
+
+                    // отправляем данные с формы и получаем токен
                     const { token } = await this.$axios.$post('/api/auth/', {
                         login: this.login.value,
                         password: this.password.value
                     })
+                    // записываем токен в store и cookie
                     await this.$store.dispatch('modules/auth/setToken', token)
                     this.loading = false
                     this.$router.push('/')
                 } catch (e) {
+                    // обрабатываем ошибки
                     if(e.response) {
                         if (e.response.status === 429) {
 

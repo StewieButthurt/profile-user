@@ -36,11 +36,14 @@
 export default {
   async middleware({store, redirect, $axios}) {
     try {
-
+      // проверяем наличие токена
       if(!store.getters['modules/auth/token']) {
           await store.dispatch('modules/auth/autoLogin')
       }
+      // отправляем токен на проверку
       const token = await $axios.$get('api/auth/token/')
+      // в случае успешной валидации токена
+      // возвращаем профиль пользователя
       await store.dispatch('modules/profile/setProfile', token.profile)
     } catch(e) {
       throw e

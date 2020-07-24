@@ -11,6 +11,8 @@ const options = {
     secretOrKey: 'jwt-key-user-profile'
 }
 
+// метод является частью middleware => passport.authenticate
+
 module.exports = new Strategy(options, async(payload, done) => {
     try {
         get(data => {

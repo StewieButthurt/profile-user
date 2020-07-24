@@ -1,4 +1,5 @@
 <template>
+    <!-- компонент уведомлений при авторизации -->
     <v-alert class="my-v-alert text-center authorization__card" 
         :dense="dense" 
         :type="type" 

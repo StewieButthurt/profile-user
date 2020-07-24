@@ -9,6 +9,7 @@ const mutations = {
 }
 
 const actions = {
+    // записываем данные пользователя
     async setProfile({ commit }, profile) {
         commit('setProfile', profile)
     }
