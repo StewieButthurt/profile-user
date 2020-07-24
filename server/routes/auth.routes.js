@@ -3,6 +3,7 @@ const passport = require('passport')
 const { login } = require('../controllers/login.js')
 const router = Router()
 const rateLimit = require("express-rate-limit")
+const db = require('../controllers/db.js')
 
 
 const AuthLimiter = rateLimit({
@@ -17,9 +18,29 @@ router.get(
     '/token',
     passport.authenticate('jwt', { session: false }),
     function(req, res) {
-        res.status(200).json({ message: 'Token true' })
-    }
-)
+        db.get(data => {
+            data.profile.every((element, index) => {
+                if (element.username === req.user) {
+                    res.json({
+                        profile: {
+                            username: element.username,
+                            name: element.name,
+                            surname: element.surname,
+                            email: element.email,
+                            photo: element.photo
+                        }
+                    })
+                    return false
+                } else {
+                    if (data.profile.length - 1 === index) {
+                        res.status(500).json('Profile not found')
+                        return false
+                    }
+                    return true
+                }
+            })
+        })
+    })
 
 
 // /api/auth/

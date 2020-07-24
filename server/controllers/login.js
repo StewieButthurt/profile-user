@@ -19,7 +19,9 @@ module.exports.login = async(req, res) => {
                             login: element.username,
                             userId: element.id
                         }, 'jwt-key-user-profile', { expiresIn: 60 * 60 })
-                        res.json({ token })
+                        res.json({
+                            token: token
+                        })
                         return false
                     } else {
 

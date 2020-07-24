@@ -8,7 +8,7 @@
         <div class="profile__descr">
           <div class="profile__descr-header">
             <div class="profile__descr-name font-weight-medium">
-              Владимир
+              {{profile.name}}
             </div>
             <div class="profile__descr-button">
               <v-btn outlined >Редактировать</v-btn>
@@ -24,7 +24,7 @@
               </div>
             </div>
             <div class="profile__descr-info-email mt-2 font-weight-light">
-              asdasdasda@yandex.ru
+              {{profile.email}}
             </div>
           </div>
         </div>
@@ -35,30 +35,27 @@
 
 export default {
   async middleware({store, redirect, $axios}) {
-    const token = store.getters['modules/auth/token']
     try {
+
       if(!store.getters['modules/auth/token']) {
           await store.dispatch('modules/auth/autoLogin')
       }
-      await $axios.$get('api/auth/token/')
+      const token = await $axios.$get('api/auth/token/')
+      await store.dispatch('modules/profile/setProfile', token.profile)
     } catch(e) {
-
+      throw e
     }
     
   },
   head: {
     title: 'Мой профиль'
   },
-  data() {
-    return {
-      profile: {
-
-      }
-    }
-  },
   computed: {
     img() {
-      return require('~/assets/' + 'avatar.jpg')
+      return require('~/assets/' + this.profile.photo)
+    },
+    profile() {
+      return this.$store.getters['modules/profile/profile']
     }
   }
 }

@@ -16,13 +16,14 @@ module.exports = new Strategy(options, async(payload, done) => {
         get(data => {
             data.profile.every((element, index) => {
                 if (element.username === payload.login) {
-                    done(null, element)
+                    done(null, element.username)
                     return false
                 } else {
                     if (data.profile.length - 1 === index) {
                         done(null, false)
                         return false
                     }
+                    return true
                 }
             })
         })
