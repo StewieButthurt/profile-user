@@ -6,6 +6,17 @@
 Поэтому первая загрузка приложений может занимать около 10-ти секунд.
 Таким образом heroku экономит ресурсы.
 
+## Авторизация пользователя
+
+Можно авторизоваться от следующих пользователей
+Далее логин : пароль 
+
+Bret : BretPassword
+Antonette : AntonettePassword
+Samantha : SamanthaPassword
+Karianne : KariannePassword
+Kamren : KamrenPassword
+
 ## Установка с помощью Docker
 
 Если отсутствует, то установить [Docker](https://docs.docker.com/desktop/)
