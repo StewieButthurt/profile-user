@@ -11,11 +11,11 @@
 Можно авторизоваться от следующих пользователей
 Далее логин : пароль 
 
-Bret : BretPassword
-Antonette : AntonettePassword
-Samantha : SamanthaPassword
-Karianne : KariannePassword
-Kamren : KamrenPassword
+Bret : BretPassword<br>
+Antonette : AntonettePassword<br>
+Samantha : SamanthaPassword<br>
+Karianne : KariannePassword<br>
+Kamren : KamrenPassword<br>
 
 ## Установка с помощью Docker
 
