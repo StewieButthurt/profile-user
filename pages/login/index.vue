@@ -10,68 +10,79 @@
                     justify="center"
                 >
                     <v-col>
-                        <v-fade-transition>
+                        <transition
+                            name="fade-hint"
+                            mode="out-in"
+                        >
                             <app-alert 
-                                v-if="alert.status"
+                                v-if="alert.status && statusCard"
                                 :text="alert.text"
                                 :dense="alert.dense"
                                 :type="alert.type"
                                 :transition="alert.transition"
                             />
-                        </v-fade-transition>
-                        <v-card class="authorization__card mt-2">
-                            <v-toolbar
-                            color="primary"
-                            dark
-                            flat
-                            >
-                                <v-toolbar-title>Авторизация</v-toolbar-title>
-                                <v-spacer></v-spacer>
-                            </v-toolbar>
-                            <v-card-text>
-                                <v-form>
-                                    
-                                    <v-text-field
-                                        label="Логин"
-                                        name="login"
-                                        prepend-icon="mdi-account"
-                                        type="text"
-                                        autocomplete="new-password"
-                                        v-model="login.value"
-                                        :error-messages="login.message"
-                                        :error="login.error"
-                                        @input="inputLogin()"
-                                        @keyup.enter="loginAuth"
-                                    />
+                        </transition>
+                        <transition
+                            name="fade-hint"
+                            mode="out-in"
+                        >
+                            <v-card 
+                                class="authorization__card mt-2"
+                                v-if="statusCard"
+                                >
+                                <v-toolbar
+                                color="primary"
+                                dark
+                                flat
+                                >
+                                    <v-toolbar-title>Авторизация</v-toolbar-title>
+                                    <v-spacer></v-spacer>
+                                </v-toolbar>
+                                <v-card-text>
+                                    <v-form>
+                                        
+                                        <v-text-field
+                                            label="Логин"
+                                            name="login"
+                                            prepend-icon="mdi-account"
+                                            type="text"
+                                            autocomplete="new-password"
+                                            v-model="login.value"
+                                            :error-messages="login.message"
+                                            :error="login.error"
+                                            @input="inputLogin()"
+                                            @keyup.enter="loginAuth"
+                                        />
 
-                                    <v-text-field
-                                        id="password"
-                                        label="Пароль"
-                                        autocomplete="new-password"
-                                        name="password"
-                                        prepend-icon="mdi-lock"
-                                        type="password"
-                                        v-model="password.value"
-                                        :error-messages="password.message"
-                                        :error="password.error"
-                                        @input="inputPassword()"
-                                        @keyup.enter="loginAuth"
-                                    />
-                                </v-form>
-                            </v-card-text>
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn 
-                                    color="primary" 
-                                    :loading="loading"
-                                    :disabled="!(disabledButtonLogin === true && 
-                                        disabledButtonPassword === true)"
-                                    @click="loginAuth()"
-                                    >
-                                    Войти
-                                </v-btn>
-                            </v-card-actions>
-                        </v-card>
+                                        <v-text-field
+                                            id="password"
+                                            label="Пароль"
+                                            autocomplete="new-password"
+                                            name="password"
+                                            prepend-icon="mdi-lock"
+                                            type="password"
+                                            v-model="password.value"
+                                            :error-messages="password.message"
+                                            :error="password.error"
+                                            @input="inputPassword()"
+                                            @keyup.enter="loginAuth"
+                                        />
+                                    </v-form>
+                                </v-card-text>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn 
+                                        color="primary" 
+                                        :loading="loading"
+                                        :disabled="!(disabledButtonLogin === true && 
+                                            disabledButtonPassword === true)"
+                                        @click="loginAuth()"
+                                        >
+                                        Войти
+                                    </v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </transition>
                     </v-col>
                 </v-row>
             </v-container>
@@ -97,6 +108,9 @@
             AppAlert
         },
         async mounted() {
+            this.$nextTick(() => {
+                this.statusCard = true
+            })
             // включаем алерт, если находимся на ?message=login
             if(this.message.message === 'login') {
                 this.$store.dispatch('modules/auth/logout')
@@ -105,6 +119,7 @@
                 this.alert.transition = 'scale-transition'
                 this.alert.status = true
             }
+            
         },
         data() {
             return {
@@ -129,7 +144,8 @@
                     dense: true,
                     type: null,
                     transition: null
-                }
+                },
+                statusCard: false
             }
         },
         computed: {
@@ -284,4 +300,16 @@
         width: 400px
         +xs-block
             width: 300px
+        
+    .fade-hint-enter-active
+        animation: fade-hint-enter .3s linear 
+
+    .fade-hint-leave-active
+        animation: fade-hint-enter .3s linear reverse
+    
+    @keyframes fade-hint-enter
+        0%
+            opacity: 0
+        100%
+            opacity: 1
 </style>
