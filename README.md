@@ -24,6 +24,7 @@ Kamren : KamrenPassword<br>
 1) В командной строке пишем "docker pull stewiebutthurt/cheers2019"
 2) После загрузки запускаем командной "docker run -p 3000:3000 -d stewiebutthurt/cheers2019"
 
+Теперь приложение доступно по адресу http://localhost:3000
 
 ## Наличие backend на Node.js
 
